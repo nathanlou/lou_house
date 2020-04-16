@@ -8,20 +8,20 @@ import Layout from '@/layout'
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
- * Detail see: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
+ * 注意: 子菜单只在路由子菜单时长度> = 1的时候出现
+ * 参考网址: https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
  *
- * hidden: true                   if set true, item will not show in the sidebar(default is false)
- * alwaysShow: true               if set true, will always show the root menu
- *                                if not set alwaysShow, when item has more than one children route,
- *                                it will becomes nested mode, otherwise not show the root menu
- * redirect: noRedirect           if set noRedirect will no redirect in the breadcrumb
+ * hidden: true                   如果设置为true，项目将不会显示在侧栏中(默认为false)
+ * alwaysShow: true               如果设置为true，将始终显示根菜单
+ *                                如果不设置alwaysShow, 当项目有多个子路由时，它将成为嵌套模式，否则不显示根菜单
+ * redirect: noRedirect           如果设置noRedirect，则不会在面包屑中重定向
  * name:'router-name'             the name is used by <keep-alive> (must set!!!)
  * meta : {
-    roles: ['admin','editor']    control the page roles (you can set multiple roles)
-    title: 'title'               the name show in sidebar and breadcrumb (recommend set)
-    icon: 'svg-name'             the icon show in the sidebar
-    breadcrumb: false            if set false, the item will hidden in breadcrumb(default is true)
-    activeMenu: '/example/list'  if set path, the sidebar will highlight the path you set
+    roles: ['admin','editor']    控制页面角色(可以设置多个角色)'admin','editor'
+    title: 'title'               名称显示在侧边栏和面包屑(推荐集)
+    icon: 'svg-name'             图标显示在侧栏中
+    breadcrumb: false            如果设置为false，则该项将隐藏在breadcrumb中(默认为true)
+    activeMenu: '/example/list'  如果设置路径，侧栏将突出显示您设置的路径
   }
  */
 
@@ -29,6 +29,9 @@ import Layout from '@/layout'
  * constantRoutes
  * a base page that does not have permission requirements
  * all roles can be accessed
+ *	没有权限要求的基本页
+ * 所有角色都可以访问
+ * 不需要动态判断权限的路由
  */
 export const constantRoutes = [
   {
@@ -195,10 +198,49 @@ export const constantRoutes = [
       }
     ]
   },
+  {
+    path: '/map',
+    component: Layout,
+    redirect: '/map/map',
+    name: 'map',
+    meta: { title: '地图分布', icon: '地图' },
+    children: [
+      {
+        path: 'map',
+        name: 'map',
+        component: () => import('@/views/map/index'),
+        meta: { title: '地图总览', icon: '总览' }
+      },
+      {
+        path: 'una_map',
+        name: 'una_map',
+        component: () => import('@/views/una_map/index'),
+        meta: { title: '无人值守地磅分布', icon: '无人值守' }
+      },
+      {
+        path: 'sec_map',
+        name: 'sec_map',
+        component: () => import('@/views/sec_map/index'),
+        meta: { title: '安保智能分布', icon: '安保服务' }
+      },
+      {
+        path: 'mix_map',
+        name: 'mix_map',
+        component: () => import('@/views/mix_map/index'),
+        meta: { title: '拌合站分布', icon: '搅拌车过磅查询' }
+      },
+	  {
+	    path: 'lab_map',
+	    name: 'lab_map',
+	    component: () => import('@/views/lab_map/index'),
+	    meta: { title: '实验室分布', icon: '实验室安全' }
+	  }
+    ]
+  },
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true },
 ]
-
+//创建路由
 const createRouter = () => new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),

@@ -20,9 +20,8 @@
         <el-button type="primary" @click="batch_add">批量添加</el-button>
       </el-form-item>
     </el-form>
-    <el-table border :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)" :default-sort="{ prop: 'equipment', order: 'descending'}"
-      style="width: 100%">
-      <el-table-column label="设备编号" align="center" width="160" sortable='true' prop="equipment" column-key="equipment">
+    <el-table border :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)" style="width: 100%">
+      <el-table-column label="设备编号" align="center" width="160" sortable :sort-orders="['ascending', 'descending','null']" prop="equipment" column-key="equipment">
       </el-table-column>
       <el-table-column label="内部编号" align="center" width="120" prop="inside">
       </el-table-column>
@@ -65,6 +64,7 @@
   export default {
     data() {
       return {
+        index:'',
         region: [{
             name: "上海",
             value: 'shanghai'
@@ -102,6 +102,7 @@
         currentPage: 1, //默认开始页面
         tableData: [
           {
+            id:"1",
             equipment: 'QHW001G200290001',
             inside:'阿发1',
             SMI:'14015632121',
@@ -113,6 +114,7 @@
             boot:'正常开机'
           },
           {
+            id:"2",
             equipment: 'QHW001G200290002',
             inside:'阿发2',
             SMI:'14015632122',
@@ -124,6 +126,7 @@
             boot:'正常开机'
           },
           {
+            id:"3",
             equipment: 'QHW001G200290003',
             inside:'阿发2',
             SMI:'14015632122',
@@ -135,6 +138,7 @@
             boot:'正常开机'
           },
           {
+            id:"4",
             equipment: 'QHW001G200290004',
             inside:'阿发2',
             SMI:'14015632122',
@@ -146,6 +150,7 @@
             boot:'正常开机'
           },
           {
+            id:"5",
             equipment: 'QHW001G200290005',
             inside:'阿发2',
             SMI:'14015632122',
@@ -157,6 +162,7 @@
             boot:'正常开机'
           },
           {
+            id:"6",
             equipment: 'QHW001G200290006',
             inside:'阿发2',
             SMI:'14015632122',
@@ -168,6 +174,7 @@
             boot:'正常开机'
           },
           {
+            id:"7",
             equipment: 'QHW001G200290007',
             inside:'阿发2',
             SMI:'14015632122',
@@ -179,6 +186,7 @@
             boot:'正常开机'
           },
           {
+            id:"8",
             equipment: 'QHW001G200290008',
             inside:'阿发2',
             SMI:'14015632122',
@@ -190,6 +198,7 @@
             boot:'正常开机'
           },
           {
+            id:"9",
             equipment: 'QHW001G200290009',
             inside:'阿发2',
             SMI:'14015632122',
@@ -201,6 +210,7 @@
             boot:'正常开机'
           },
           {
+            id:"10",
             equipment: 'QHW001G200290010',
             inside:'阿发10',
             SMI:'14015632122',
@@ -212,6 +222,7 @@
             boot:'正常开机'
           },
           {
+            id:"11",
             equipment: 'QHW001G200290011',
             inside:'阿发2',
             SMI:'14015632122',
@@ -223,6 +234,7 @@
             boot:'正常开机'
           },
           {
+            id:"12",
             equipment: 'QHW001G200290012',
             inside:'阿发2',
             SMI:'14015632122',
@@ -258,12 +270,16 @@
         // })
       },
       handleDelete(index,row) {
-        console.log(index,row)
-        // this.tableData.splice(index,1)
+        var that = this
         this.dialogVisible = true
+        console.log(index,row)
+        that.index = row
+        // this.tableData.splice(index,1)
       },
-      dele(index){
-          console.log(index)
+      dele(){
+          console.log(this.index)
+          this.tableData.splice(this.index,1)
+          this.dialogVisible = false
       }
     }
   }
