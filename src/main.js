@@ -19,6 +19,12 @@ import echarts from 'echarts'
 
 Vue.prototype.$echarts = echarts;
 
+import BaiduMap from 'vue-baidu-map'
+
+Vue.use(BaiduMap, {
+    ak: 'baiN3YMMbDwogZCBQ8gUGvyHsQ4FbZXA'
+});
+
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api
