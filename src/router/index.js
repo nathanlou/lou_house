@@ -210,31 +210,7 @@ export const constantRoutes = [
         name: 'map',
         component: () => import('@/views/map/index'),
         meta: { title: '地图总览', icon: '总览' }
-      },
-      {
-        path: 'una_map',
-        name: 'una_map',
-        component: () => import('@/views/una_map/index'),
-        meta: { title: '无人值守地磅分布', icon: '无人值守' }
-      },
-      {
-        path: 'sec_map',
-        name: 'sec_map',
-        component: () => import('@/views/sec_map/index'),
-        meta: { title: '安保智能分布', icon: '安保服务' }
-      },
-      {
-        path: 'mix_map',
-        name: 'mix_map',
-        component: () => import('@/views/mix_map/index'),
-        meta: { title: '拌合站分布', icon: '搅拌车过磅查询' }
-      },
-	  {
-	    path: 'lab_map',
-	    name: 'lab_map',
-	    component: () => import('@/views/lab_map/index'),
-	    meta: { title: '实验室分布', icon: '实验室安全' }
-	  }
+      }
     ]
   },
   // 404 page must be placed at the end !!!
