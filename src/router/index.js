@@ -65,6 +65,10 @@ export const constantRoutes = [
      path: '/modify_una',
      component: () => import('@/views/modify_una/index')
     },
+	 {
+	   path: '/add_device',
+	   component: () => import('@/views/add_device/index')
+	  },
 
   {
     path: '/Unattended',
@@ -79,6 +83,12 @@ export const constantRoutes = [
         component: () => import('@/views/Unattended/index'),
         meta: { title: '运行总览', icon: '总览' }
       },
+	  {
+	    path: 'vehicle_management',
+	    name: 'vehicle_management',
+	    component: () => import('@/views/vehicle_management/index'),
+	    meta: { title: '供应链车辆管理', icon: '车辆' }
+	  },
       {
         path: 'unattended_list',
         name: 'Unattended_list',
@@ -209,7 +219,7 @@ export const constantRoutes = [
         path: 'map',
         name: 'map',
         component: () => import('@/views/map/index'),
-        meta: { title: '地图总览', icon: '总览' }
+        meta: { title: '地图分布', icon: '地图' }
       }
     ]
   },
