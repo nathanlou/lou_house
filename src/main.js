@@ -25,6 +25,18 @@ Vue.use(BaiduMap, {
     ak: 'baiN3YMMbDwogZCBQ8gUGvyHsQ4FbZXA'
 });
 
+import AMap from 'vue-amap';
+Vue.use(AMap);
+
+  // 初始化vue-amap
+AMap.initAMapApiLoader({
+  // 高德key
+  key: 'da0f34fb505ee515066864b0bee3e814',
+  // 插件集合 （插件按需引入）
+   plugin: ['AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor'],
+  // 高德 sdk 版本，默认为 1.4.4
+   v: '1.4.4'
+});
 /**
  * If you don't want to use mock-server
  * you want to use MockJs for mock api

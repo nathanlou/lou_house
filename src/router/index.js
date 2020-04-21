@@ -69,7 +69,43 @@ export const constantRoutes = [
 	   path: '/add_device',
 	   component: () => import('@/views/add_device/index')
 	  },
-
+	{
+    path: '/Large',
+    component: () => import('@/views/Large/index')
+   },
+   {
+     path: '/Supply',
+     component: Layout,
+     redirect: '/Supply/Supply',
+     name: 'Supply',
+     meta: { title: '供应链管理', icon: '供应链' },
+     children: [
+       {
+         path: 'Supply',
+         name: 'Supply',
+         component: () => import('@/views/Supply/index'),
+         meta: { title: '运行总览', icon: '总览' }
+       },
+       {
+         path: 'Supply_list',
+         name: 'Supply_list',
+         component: () => import('@/views/Supply_list/index'),
+         meta: { title: '设备列表', icon: '设备列表' }
+       },
+       {
+         path: 'Supply_alert',
+         name: 'Supply_alert',
+         component: () => import('@/views/Supply_alert/index'),
+         meta: { title: '报警设备', icon: '报警' }
+       },
+       {
+         path: 'Supply_Journal',
+         name: 'Supply_Journal',
+         component: () => import('@/views/Supply_Journal/index'),
+         meta: { title: '设备日志', icon: '日志' }
+       }
+     ]
+   },
   {
     path: '/Unattended',
     component: Layout,
@@ -180,7 +216,7 @@ export const constantRoutes = [
     component: Layout,
     redirect: '/Laboratory/Laboratory',
     name: 'Laboratory',
-    meta: { title: '实验室管理', icon: '实验室安全' },
+    meta: { title: '环保设备管理', icon: '实验室安全' },
     children: [
       {
         path: 'Laboratory',
@@ -223,6 +259,21 @@ export const constantRoutes = [
       }
     ]
   },
+  // {
+  //   path: '/Large',
+  //   component: Layout,
+  //   redirect: '/Large/Large',
+  //   name: 'Large',
+  //   meta: { title: '大屏展示', icon: 'DVLINK_大屏' },
+  //   children: [
+  //     {
+  //       path: 'Large',
+  //       name: 'Large',
+  //       component: () => import('@/views/Large/index'),
+  //       meta: { title: '大屏展示', icon: 'DVLINK_大屏' }
+  //     }
+  //   ]
+  // },
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true },
 ]
