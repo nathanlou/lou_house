@@ -11,7 +11,7 @@
     <!-- 顶部四个系统预览结束 -->
     <!-- 趋势折线图开始 -->
     <div class="chart_container">
-      <div class="Line_graph_title">近一周设备信息趋势</div>
+      <div class="Line_graph_title">当前仓料信息</div>
       <div id="chart" ref="chart"></div>
     </div>
     <!-- 趋势折线图结束 -->
@@ -54,21 +54,7 @@ export default {
           name:'报警设备',
           number:'200',
           background:'#46b99c'
-        },
-		{
-		  id:'5',
-		  img:require('../../assets/404_images/报警.png'),
-		  name:'今日上料',
-		  number:'200',
-		  background:'#f87e3d'
-		},
-		{
-		  id:'6',
-		  img:require('../../assets/404_images/报警.png'),
-		  name:'昨日用料',
-		  number:'200',
-		  background:'#00acee'
-		}
+        }
       ]
     }
   },
@@ -80,29 +66,45 @@ export default {
   　　myChart.setOption({
     　　title: { },
     　　tooltip: {
-          formatter: '{a0}:{c0}台'
+        trigger: 'axis',
+        axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+            type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+        }
+    },
+    legend: {
+        data: ['上料前', '本次上料']
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    xAxis: [
+        {
+            type: 'category',
+            data: ["一号仓","二号仓","三号仓","四号仓","五号仓","六号仓","七号仓"]    
+        }
+    ],
+    yAxis: [
+        {
+            type: 'value'
+        }
+    ],
+    series: [
+        {
+            name: '上料前',
+            type: 'bar',
+            stack: '广告',
+            data: [120, 132, 101, 134, 90, 230, 210]
         },
-    　　xAxis: {
-    　　data: ["周一","周二","周三","周四","周五","周六","周日"]
-    　　},
-    　　yAxis: {},
-        legend: {
-          data: ['报警趋势', '故障趋势']
-        },
-        series:[
-          {
-            name: '报警趋势', // 系列名称
-            smooth:true,
-            type: 'line', // 类型：线
-            data: [31,52,33,84,35,46,67], // 数据
-          },
-          {
-            name: '故障趋势', // 系列名称
-            smooth:true,
-            type: 'line', // 类型：线
-            data: [12,26,43,47,65,46,37], // 数据
-          }
-        ]
+        {
+            name: '本次上料',
+            type: 'bar',
+            stack: '广告',
+            data: [220, 182, 191, 234, 290, 330, 310]
+        }
+    ]
   　　});
 　　}
 　},

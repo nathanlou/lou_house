@@ -33,7 +33,7 @@ AMap.initAMapApiLoader({
   // 高德key
   key: 'da0f34fb505ee515066864b0bee3e814',
   // 插件集合 （插件按需引入）
-   plugin: ['AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor'],
+   plugin: ['AMap.MarkerClusterer','AMap.Autocomplete', 'AMap.PlaceSearch', 'AMap.Scale', 'AMap.OverView', 'AMap.ToolBar', 'AMap.MapType', 'AMap.PolyEditor', 'AMap.CircleEditor', 'AMap.TruckDriving', 'AMap.Geolocation'],
   // 高德 sdk 版本，默认为 1.4.4
    v: '1.4.4'
 });

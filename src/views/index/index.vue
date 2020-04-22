@@ -77,21 +77,26 @@
 			details: function(id) {
 				if (id == 1) {
 					this.$router.push({
-						path: '/Unattended'
+						path: '/Supply'
 					})
 				} else if (id == 2) {
 					this.$router.push({
-						path: '/Security'
+						path: '/Unattended'
 					})
 				} else if (id == 3) {
 					this.$router.push({
-						path: '/Mixing'
+						path: '/Security'
 					})
 				} else if (id == 4) {
 					this.$router.push({
+						path: '/Mixing'
+					})
+				}else if(id == 5){
+					this.$router.push({
 						path: '/Laboratory'
 					})
-				}
+						
+					}
 			},
 			initCharts() {
 				let myChart = this.$echarts.init(this.$refs.chart);
@@ -100,21 +105,39 @@
 				myChart.setOption({
 					title: {},
 					tooltip: {
-						formatter: '{a0}:{c0}台'
+						formatter: '{a0}:{c0}台',
+						axisPointer: { // 坐标轴指示器，坐标轴触发有效
+							type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
+						}
+					},
+					toolbox: {
+						feature: {
+							saveAsImage: {},
+							dataZoom: {
+								yAxisIndex: 'none'
+							},
+							dataView: {
+								readOnly: false
+							},
+							magicType: {
+								type: ['bar', 'line']
+							},
+							restore: {}
+						}
 					},
 					xAxis: {
 						data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"]
 					},
 					yAxis: {},
 					legend: {
-						data: ['供应链管理','无人值守地磅', '安保服务', '拌合站中控', '环保管理']
+						data: ['供应链管理', '无人值守地磅', '安保服务', '拌合站中控', '环保管理']
 					},
 					series: [{
 							name: '供应链管理', // 系列名称
 							smooth: true,
 							type: 'line', // 类型：线
 							data: [39, 62, 123, 44, 65, 36, 82], // 数据
-						},{
+						}, {
 							name: '无人值守地磅', // 系列名称
 							smooth: true,
 							type: 'line', // 类型：线
