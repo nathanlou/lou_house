@@ -1,31 +1,92 @@
 <template>
   <div class="app-container">
     <el-form :inline="true" ref="form" :model="form" label-width="80px" class="demo-form-inline">
-      <el-form-item label="企业">
-        <el-select v-model="form.region" placeholder="请选择">
-          <el-option v-for="(item,index) in region" :key='index' :label="item.name" :value="item.value"></el-option>
-        </el-select>
-      </el-form-item>
       <el-form-item label="关键字">
-        <el-input v-model="search" placeholder="编号、工地名称、SMI"></el-input>
-      </el-form-item>
-      <el-form-item label="状态">
-        <el-select v-model="form.status" placeholder="全部">
-          <el-option v-for="(item,index) in status" :key='index' :label="item.name" :value="item.value"></el-option>
-        </el-select>
+        <el-input v-model="search" placeholder="内部编号、工地名称"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit">查询</el-button>
-        <el-button type="primary" @click="add">添加</el-button>
-        <el-button type="primary" @click="batch_add">批量添加</el-button>
+        <el-button type="primary" @click="dialogFormVisible = true">添加</el-button>
       </el-form-item>
     </el-form>
+	<!-- 添加 -->
+	<el-dialog title="添加设备信息" :visible.sync="dialogFormVisible">
+		<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+		  <el-row type="flex" class="row-bg">
+		    <el-col :span="10">
+		      <el-form-item label="企业" prop="region">
+		        <el-select v-model="ruleForm.region" placeholder="请选择">
+		          <el-option label="区域一" value="shanghai"></el-option>
+		        </el-select>
+		      </el-form-item>
+		    </el-col>
+		    <el-col :span="14">
+		      <el-form-item label="设备编号" prop="equipment_num">
+		        <el-input v-model="ruleForm.equipment_num"></el-input>
+		      </el-form-item>
+		    </el-col>
+		  </el-row>
+		  <el-row type="flex" class="row-bg">
+		    <el-col :span="10">
+		      <el-form-item label="内部编号" prop="name">
+		        <el-input v-model="ruleForm.name"></el-input>
+		      </el-form-item>
+		    </el-col>
+		    <el-col :span="14">
+		      <el-form-item label="SMI卡号" prop="SMI">
+		        <el-input v-model="ruleForm.SMI"></el-input>
+		      </el-form-item>
+		    </el-col>
+		  </el-row>
+		  <el-row type="flex" class="row-bg">
+		    <el-col :span="10">
+		      <el-form-item label="工地名称" prop="field">
+		        <el-input v-model="ruleForm.field"></el-input>
+		      </el-form-item>
+		    </el-col>
+		    <el-col :span="14">
+		      <el-form-item label="负责人" prop="people">
+		        <el-input v-model="ruleForm.people"></el-input>
+		      </el-form-item>
+		    </el-col>
+		  </el-row>
+		  <el-row type="flex" class="row-bg">
+		    <el-col :span="10">
+		      <el-form-item label="手机号" prop="phone">
+		        <el-input v-model="ruleForm.phone"></el-input>
+		      </el-form-item>
+		    </el-col>
+		    <el-col :span="14">
+		      <el-form-item label="型号" prop="model">
+		        <el-input v-model="ruleForm.model"></el-input>
+		      </el-form-item>
+		    </el-col>
+		  </el-row>
+		  <el-row type="flex" class="row-bg">
+		    <el-col :span="10">
+		      <el-form-item label="容量" prop="capacity">
+		        <el-input v-model="ruleForm.capacity"></el-input>
+		      </el-form-item>
+		    </el-col>
+		    <el-col :span="14">
+		      <el-form-item label="归属企业" prop="model">
+		        <el-input v-model="ruleForm.ascription"></el-input>
+		      </el-form-item>
+		    </el-col>
+		  </el-row>
+		  <el-form-item>
+		    <el-button type="primary" @click="submitForm('ruleForm')">立即添加</el-button>
+		  </el-form-item>
+		</el-form>
+	</el-dialog>
+	<!-- 添加 -->
     <el-table border ref='tableData' :data="tables.slice((currentPage-1)*pagesize,currentPage*pagesize)" style="width: 100%">
       <el-table-column label="设备编号" align="center" width="160" sortable prop="equipment" column-key="equipment">
       </el-table-column>
       <el-table-column label="内部编号" align="center" width="120" prop="inside">
       </el-table-column>
-      <el-table-column label="SMI" align="center" width="150" prop="SMI">
+      <el-table-column label="所属企业" align="center" width="150" prop="enterprise" :filters="this.enterprise"
+      :filter-method="filterHandler">
       </el-table-column>
       <el-table-column label="工地名称" align="center" width="160" prop="field">
       </el-table-column>、
@@ -35,8 +96,16 @@
       </el-table-column>
       <el-table-column label="缺料报警" align="center" width="80" prop="police">
       </el-table-column>
-      <el-table-column label="状态" align="center" width="80" prop="status">
-      </el-table-column>
+      <el-table-column prop="status" label="状态" align="center" width="100"
+      :filters="this.status"
+      :filter-method="filterTag"
+      filter-placement="bottom-end">
+      <template slot-scope="scope">
+        <el-tag
+          :type="scope.row.tag === '在线' ? 'primary' : 'success'"
+          disable-transitions>{{scope.row.status}}</el-tag>
+      </template>
+	  </el-table-column>
       <el-table-column label="开机状态" align="center" width="120" prop="boot">
       </el-table-column>
       <el-table-column label="操作" align="center">
@@ -64,6 +133,18 @@
   export default {
     data() {
       return {
+		  ruleForm: {
+		    name: '',
+		    region: '',
+		    SMI: '',
+		    field: '',
+		    people: '',
+		    phone:'',
+		    model:'',
+		    capacity:'',
+		    ascription:''
+		  },
+		   dialogFormVisible: false,
         index:'',
         region: [{
             name: "上海",
@@ -78,24 +159,19 @@
             value: 'shenzhen'
           }
         ],
-        status: [{
-            name: "全部",
-            value: 'all'
-          },
-          {
-            name: '在线',
-            value: 'on'
-          },
-          {
-            name: '离线',
-            value: 'off'
-          }
-        ],
+        status: [{ text: '在线', value: '在线' }, { text: '离线', value: '离线' }],
+		enterprise:[{text:"大企业",value:'大企业'},{text:"小企业",value:'小企业'}],
         form: {
+          name: '',
           region: '',
-          crux: "",
-          status: ''
+          date1: '',
+          date2: '',
+          delivery: false,
+          type: [],
+          resource: '',
+          desc: ''
         },
+		formLabelWidth: '120px',
         dialogVisible: false,
         total: 0, //默认数据总数
         pagesize: 10, //每页的数据条数
@@ -105,7 +181,7 @@
             id:"1",
             equipment: 'QHW001G200290001',
             inside:'阿发1',
-            SMI:'14015632121',
+            enterprise:'大企业',
             field:'阿达西',
             capacity:'50',
             allowance:'4513',
@@ -117,7 +193,7 @@
             id:"2",
             equipment: 'QHW001G200290002',
             inside:'阿发2',
-            SMI:'14015632122',
+            enterprise:'大企业',
             field:'不急不急',
             capacity:'57',
             allowance:'4503',
@@ -129,7 +205,7 @@
             id:"3",
             equipment: 'QHW001G200290003',
             inside:'阿发2',
-            SMI:'14015632122',
+            enterprise:'大企业',
             field:'不急不急',
             capacity:'57',
             allowance:'4503',
@@ -141,7 +217,7 @@
             id:"4",
             equipment: 'QHW001G200290004',
             inside:'阿发2',
-            SMI:'14015632122',
+            enterprise:'大企业',
             field:'不急不急',
             capacity:'57',
             allowance:'4503',
@@ -153,7 +229,7 @@
             id:"5",
             equipment: 'QHW001G200290005',
             inside:'阿发2',
-            SMI:'14015632122',
+            enterprise:'大企业',
             field:'不急不急',
             capacity:'57',
             allowance:'4503',
@@ -165,7 +241,7 @@
             id:"6",
             equipment: 'QHW001G200290006',
             inside:'阿发2',
-            SMI:'14015632122',
+            enterprise:'小企业',
             field:'不急不急',
             capacity:'57',
             allowance:'4503',
@@ -177,19 +253,19 @@
             id:"7",
             equipment: 'QHW001G200290007',
             inside:'阿发2',
-            SMI:'14015632122',
+            enterprise:'大企业',
             field:'不急不急',
             capacity:'57',
             allowance:'4503',
             police:'5%',
-            status:'在线',
+            status:'离线',
             boot:'正常开机'
           },
           {
             id:"8",
             equipment: 'QHW001G200290008',
             inside:'阿发2',
-            SMI:'14015632122',
+            enterprise:'小企业',
             field:'不急不急',
             capacity:'57',
             allowance:'4503',
@@ -201,31 +277,31 @@
             id:"9",
             equipment: 'QHW001G200290009',
             inside:'阿发2',
-            SMI:'14015632122',
+            enterprise:'大企业',
             field:'不急不急',
             capacity:'57',
             allowance:'4503',
             police:'5%',
-            status:'在线',
+            status:'离线',
             boot:'正常开机'
           },
           {
             id:"10",
             equipment: 'QHW001G200290010',
             inside:'阿发10',
-            SMI:'14015632122',
+           enterprise:'小企业',
             field:'不急不急',
             capacity:'57',
             allowance:'4503',
             police:'5%',
-            status:'在线',
+            status:'离线',
             boot:'正常开机'
           },
           {
             id:"11",
             equipment: 'QHW001G200290011',
             inside:'阿发2',
-            SMI:'14015632122',
+            enterprise:'大企业',
             field:'不急不急',
             capacity:'57',
             allowance:'4503',
@@ -237,16 +313,68 @@
             id:"12",
             equipment: 'QHW001G200290012',
             inside:'阿发2',
-            SMI:'14015632122',
+            enterprise:'小企业',
             field:'不急不急',
             capacity:'57',
             allowance:'4503',
             police:'5%',
-            status:'在线',
+            status:'离线',
             boot:'正常开机'
           },
         ],
-        search: ''
+        search: '',
+		rules: {
+		equipment_num:[{
+		        required: true,
+		        message: '请输入设备编号',
+		        trigger: 'blur'
+		      }],
+		      name: [{
+		        required: true,
+		        message: '请输入内部编号',
+		        trigger: 'blur'
+		      }],
+		      region: [{
+		        required: true,
+		        message: '请选择公司',
+		        trigger: 'change'
+		      }],
+		      SMI: [{
+		        required: true,
+		        message: '请输入SMI卡号',
+		        trigger: 'blur'
+		      }],
+		      field: [{
+		        required: true,
+		        message: '请输入工地名称',
+		        trigger: 'blur'
+		      }],
+		      people: [{
+		        required: true,
+		        message: '请输入负责人',
+		        trigger: 'blur'
+		      }],
+		      phone: [{
+		        required: true,
+		        message: '请输入手机号',
+		        trigger: 'blur'
+		      }],
+		      model: [{
+		        required: true,
+		        message: '请输入型号',
+		        trigger: 'blur'
+		      }],
+		      capacity:[{
+		        required: true,
+		        message: '请输入容量',
+		        trigger: 'blur'
+		      }],
+		      ascription:[{
+		        required: true,
+		        message: '请输入归属企业',
+		        trigger: 'blur'
+		      }]
+		    }
       }
     },
 	computed:{
@@ -275,19 +403,37 @@
 	  }
 	},
     methods: {
+		submitForm(formName) {
+		  this.$refs[formName].validate((valid) => {
+		    if (valid) {
+			  this.dialogFormVisible = false;
+		    } else {
+		      console.log('error submit!!');
+		      return false;
+		    }
+		  });
+		},
+		add(){
+			this.dialogFormVisible = false
+		},
+		current_change: function(currentPage) {
+		  this.currentPage = currentPage;
+		},
+		resetDateFilter() {
+        this.$refs.filterTable.clearFilter('date');
+      },
+      clearFilter() {
+        this.$refs.filterTable.clearFilter();
+      },
+      filterTag(value, row) {
+        return row.status === value;
+      },
+	  filterHandler(value, row, column) {
+        const property = column['property'];
+        return row[property] === value;
+      },
       onSubmit() {
         console.log('submit!');
-      },
-      add(){
-        this.$router.push({
-			path:'/add_device'
-		})
-      },
-      batch_add(){
-        console.log('batch_add')
-      },
-      current_change: function(currentPage) {
-        this.currentPage = currentPage;
       },
       handleEdit(index, row) {
         console.log(index, row);
@@ -311,6 +457,9 @@
   }
 </script>
 <style scoped>
+	.app-container{
+		padding-bottom: 3%;
+	}
   .block {
     position: absolute;
     left: 2%;

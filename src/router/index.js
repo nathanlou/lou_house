@@ -65,10 +65,6 @@ export const constantRoutes = [
      path: '/modify_una',
      component: () => import('@/views/modify_una/index')
     },
-	 {
-	   path: '/add_device',
-	   component: () => import('@/views/add_device/index')
-	  },
 	{
     path: '/Large',
     component: () => import('@/views/Large/index')
@@ -90,13 +86,7 @@ export const constantRoutes = [
          path: 'Supply_list',
          name: 'Supply_list',
          component: () => import('@/views/Supply_list/index'),
-         meta: { title: '设备列表', icon: '设备列表' }
-       },
-       {
-         path: 'Supply_alert',
-         name: 'Supply_alert',
-         component: () => import('@/views/Supply_alert/index'),
-         meta: { title: '报警设备', icon: '报警' }
+         meta: { title: '车辆列表', icon: '设备列表' }
        },
        {
          path: 'Supply_Journal',
@@ -119,12 +109,6 @@ export const constantRoutes = [
         component: () => import('@/views/Unattended/index'),
         meta: { title: '运行总览', icon: '总览' }
       },
-	  {
-	    path: 'vehicle_management',
-	    name: 'vehicle_management',
-	    component: () => import('@/views/vehicle_management/index'),
-	    meta: { title: '供应链车辆管理', icon: '车辆' }
-	  },
       {
         path: 'unattended_list',
         name: 'Unattended_list',
@@ -135,7 +119,7 @@ export const constantRoutes = [
         path: 'unattended_alert',
         name: 'Unattended_alert',
         component: () => import('@/views/unattended_alert/index'),
-        meta: { title: '报警设备', icon: '报警' }
+        meta: { title: '称重记录', icon: '报警' }
       },
       {
         path: 'unattended_Journal',

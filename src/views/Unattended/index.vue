@@ -11,7 +11,7 @@
 		<!-- 顶部四个系统预览结束 -->
 		<!-- 趋势折线图开始 -->
 		<div class="chart_container">
-			<div class="Line_graph_title">近一周设备信息趋势</div>
+			<div class="Line_graph_title">近一周过磅信息趋势</div>
 			<div id="chart" ref="chart"></div>
 		</div>
 		<!-- 趋势折线图结束 -->
