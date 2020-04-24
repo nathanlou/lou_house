@@ -64,47 +64,88 @@ export default {
   　　console.log(this.$refs.chart)
   　　// 绘制图表
   　　myChart.setOption({
-    　　title: { },
     　　tooltip: {
-        trigger: 'axis',
-        axisPointer: {            // 坐标轴指示器，坐标轴触发有效
-            type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
-        }
-    },
-    legend: {
-        data: ['上料前', '本次上料']
-    },
-    grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        containLabel: true
-    },
-    xAxis: [
-        {
-            type: 'category',
-            data: ["一号仓","二号仓","三号仓","四号仓","五号仓","六号仓","七号仓"]    
-        }
-    ],
-    yAxis: [
-        {
-            type: 'value'
-        }
-    ],
-    series: [
-        {
-            name: '上料前',
-            type: 'bar',
-            stack: '广告',
-            data: [120, 132, 101, 134, 90, 230, 210]
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow',
+                label: {
+                    show: true
+                }
+            }
         },
-        {
-            name: '本次上料',
-            type: 'bar',
-            stack: '广告',
-            data: [220, 182, 191, 234, 290, 330, 310]
-        }
-    ]
+        toolbox: {
+            show: true,
+            feature: {
+                mark: {show: true},
+                dataView: {show: true, readOnly: false},
+                magicType: {show: true, type: ['line', 'bar']},
+                restore: {show: true},
+                saveAsImage: {show: true}
+            }
+        },
+        calculable: true,
+        legend: {
+            data: ['Growth', '2020', '2021'],
+            itemGap: 5
+        },
+        grid: {
+            top: '12%',
+            left: '1%',
+            right: '10%',
+            containLabel: true
+        },
+        xAxis: [
+            {
+                type: 'category',
+                data: ['58同城', '360', '腾讯','百度','阿里','万达','ss','阿达','撒大声地','的','个','改变','放大','丰富的非','发的发的发','58同城', '360', '腾讯','百度','阿里','万达','ss','阿达','撒大声地','的','个','改变','放大','丰富的非','发的发的发','58同城', '360', '腾讯','百度','阿里','村上春树']
+            }
+        ],
+        yAxis: [
+            {
+                type: 'value'
+            }
+        ],
+        dataZoom: [
+            {
+                show: true,
+                start: 94,
+                end: 100
+            },
+            {
+                type: 'inside',
+                start: 94,
+                end: 100
+            },
+            // {
+            //     show: true,
+            //     yAxisIndex: 0,
+            //     filterMode: 'empty',
+            //     width: 30,
+            //     height: '80%',
+            //     showDataShadow: false,
+            //     left: '93%'
+            // }
+        ],
+        series: [
+            {
+                name: '2020',
+                type: 'bar',
+                data: [39, 62, 123, 44, 65, 36, 82,
+				39, 62, 123, 44, 65, 36, 82,
+				39, 62, 123, 44, 65, 736, 82,
+				39, 62, 123, 441, 65, 316, 182,
+				39, 62, 123, 44, 65, 36, 82],
+            },
+            {
+                name: '2021',
+                type: 'bar',
+                data: [309, 67, 13, 84, 65, 36, 82,
+                39, 62, 123, 44, 65, 36, 82,
+                39, 62, 123, 44, 65, 36, 82,
+                39, 62, 123, 441, 65, 716, 182,
+                39, 62, 123, 44, 65, 36, 82],
+            }
+        ]
   　　});
 　　}
 　},

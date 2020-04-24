@@ -1,13 +1,9 @@
 <template>
   <div class="app-container">
     <el-form :inline="true" ref="form" :model="form" label-width="80px" class="demo-form-inline">
-      <el-form-item label="关键字">
-        <el-input v-model="search" placeholder="内部编号、工地名称"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="onSubmit">查询</el-button>
+      	<el-input v-model="tableDataName" placeholder="请输入企业名称" style="width:15rem"></el-input>
+      	<el-button type="primary" @click="doFilter">搜索</el-button>
         <el-button type="primary" @click="dialogFormVisible = true">添加</el-button>
-      </el-form-item>
     </el-form>
 	<!-- 添加 -->
 	<el-dialog title="添加设备信息" :visible.sync="dialogFormVisible">
@@ -80,7 +76,7 @@
 		</el-form>
 	</el-dialog>
 	<!-- 添加 -->
-    <el-table border ref='tableData' :data="tables.slice((currentPage-1)*pagesize,currentPage*pagesize)" style="width: 100%">
+   <el-table :data="tableDataEnd" border style="width: auto;margin-top: 0.9375rem;">
       <el-table-column label="设备编号" align="center" width="160" sortable prop="equipment" column-key="equipment">
       </el-table-column>
       <el-table-column label="内部编号" align="center" width="120" prop="inside">
@@ -116,14 +112,15 @@
             <span class="el-icon-warning tips"> 确定要删除吗？</span>
             <span slot="footer" class="dialog-footer">
               <el-button @click="dialogVisible = false">取 消</el-button>
-              <el-button type="primary" @click="dele">确 定</el-button>
+              <el-button type="primary" @click="dele(scope.$index, scope.row)">确 定</el-button>
             </span>
           </el-dialog>
         </template>
       </el-table-column>
     </el-table>
     <div class="block">
-      <el-pagination @current-change="current_change" layout="total,  prev, pager, next, jumper" :total="tableData.length">
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
+       :page-size="pageSize" layout="total,  prev, pager, next, jumper" :total="totalItems">
       </el-pagination>
     </div>
   </div>
@@ -173,10 +170,15 @@
         },
 		formLabelWidth: '120px',
         dialogVisible: false,
-        total: 0, //默认数据总数
         pagesize: 10, //每页的数据条数
         currentPage: 1, //默认开始页面
-        tableData: [
+				tableDataName: "",
+				tableDataEnd: [],
+				totalItems: 0,
+				pageSize: 10,
+				filterTableDataEnd: [],
+				flag: false,
+        tableDataBegin: [
           {
             id:"1",
             equipment: 'QHW001G200290001',
@@ -323,6 +325,7 @@
           },
         ],
         search: '',
+		deles:'',
 		rules: {
 		equipment_num:[{
 		        required: true,
@@ -377,35 +380,75 @@
 		    }
       }
     },
-	computed:{
-		// 模糊搜索
-	  tables () {
-	    const search = this.search
-	    if (search) {
-	      // filter() 方法创建一个新的数组，新数组中的元素是通过检查指定数组中符合条件的所有元素。
-	      // 注意： filter() 不会对空数组进行检测。
-	      // 注意： filter() 不会改变原始数组。
-	      return this.tableData.filter(data => {
-	        // some() 方法用于检测数组中的元素是否满足指定条件;
-	        // some() 方法会依次执行数组的每个元素：
-	        // 如果有一个元素满足条件，则表达式返回true , 剩余的元素不会再执行检测;
-	        // 如果没有满足条件的元素，则返回false。
-	        // 注意： some() 不会对空数组进行检测。
-	        // 注意： some() 不会改变原始数组。
-	        return Object.keys(data).some(key => {
-	          // indexOf() 返回某个指定的字符在某个字符串中首次出现的位置，如果没有找到就返回-1；
-	          // 该方法对大小写敏感！所以之前需要toLowerCase()方法将所有查询到内容变为小写。
-	          return String(data[key]).toLowerCase().indexOf(search) > -1
-	        })
-	      })
-	    }
-	    return this.tableData
-	  }
+	created(){
+		this.totalItems = this.tableDataBegin.length;
+		if (this.totalItems > this.pageSize) {
+			for (let index = 0; index < this.pageSize; index++) {
+				this.tableDataEnd.push(this.tableDataBegin[index]);
+			}
+		} else {
+			this.tableDataEnd = this.tableDataBegin;
+		}
 	},
     methods: {
+			//前端搜索功能需要区分是否检索,因为对应的字段的索引不同
+			//用两个变量接收currentChangePage函数的参数
+			doFilter() {
+				if (this.tableDataName == "") {
+					this.$message.warning("查询条件不能为空！");
+					return;
+				}
+				this.tableDataEnd = []
+				//每次手动将数据置空,因为会出现多次点击搜索情况
+				this.filterTableDataEnd = []
+				this.tableDataBegin.forEach((value, index) => {
+					if (value.enterprise) {
+						if (value.enterprise.indexOf(this.tableDataName) >= 0) {
+							this.filterTableDataEnd.push(value)
+						}
+					}
+				});
+				//页面数据改变重新统计数据数量和当前页
+				this.currentPage = 1
+				this.totalItems = this.filterTableDataEnd.length
+				//渲染表格,根据值
+				this.currentChangePage(this.filterTableDataEnd)
+				//页面初始化数据需要判断是否检索过
+				this.flag = true
+			},
+			handleSizeChange(val) {
+				console.log(`每页 ${val} 条`);
+				this.pageSize = val;
+				this.handleCurrentChange(this.currentPage);
+			},
+			handleCurrentChange(val) {
+				console.log(`当前页: ${val}`);
+				this.currentPage = val;
+				//需要判断是否检索
+				if (!this.flag) {
+					//tableDataBegin不能写成tableDataEnd，不然在没有进行搜索功能的时候，不能进行分页操作，数据丢失
+					this.currentChangePage(this.tableDataBegin)
+				} else {
+					this.currentChangePage(this.filterTableDataEnd)
+				}
+			}, //组件自带监控当前页码
+			currentChangePage(list) {
+				let from = (this.currentPage - 1) * this.pageSize;
+				let to = this.currentPage * this.pageSize;
+				this.tableDataEnd = [];
+				for (; from < to; from++) {
+					if (list[from]) {
+						this.tableDataEnd.push(list[from]);
+					}
+				}
+			},
 		submitForm(formName) {
 		  this.$refs[formName].validate((valid) => {
 		    if (valid) {
+			this.tableDataEnd.unshift({name:this.ruleForm.name,equipment:this.ruleForm.equipment_num,
+			inside:this.ruleForm.inside,enterprise:this.ruleForm.ascription,field:this.ruleForm.field,
+			capacity:this.ruleForm.capacity,
+			});
 			  this.dialogFormVisible = false;
 		    } else {
 		      console.log('error submit!!');
@@ -433,26 +476,23 @@
         return row[property] === value;
       },
       onSubmit() {
-        console.log('submit!');
+        // console.log('submit!');
       },
       handleEdit(index, row) {
-        console.log(index, row);
+        // console.log(index, row);
         this.$router.push({
           path: '/device_details'
         })
       },
       handleDelete(index,row) {
-        var that = this
-        this.dialogVisible = true
-        console.log(index,row)
-        that.index = row
-        // this.tableData.splice(index,1)
+		  this.dialogVisible = true 
+		   this.i = index
+		   // this.tableDataEnd.splice(index,1)
       },
-      dele(){
-          console.log(this.index)
-          this.tableData.splice(this.index,1)
-          this.dialogVisible = false
-      }
+	  dele:function(index,row){
+		  this.dialogVisible = false
+	  	this.tableDataEnd.splice(this.i,1)
+	  }   
     }
   }
 </script>
