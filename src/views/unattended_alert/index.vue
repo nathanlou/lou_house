@@ -19,7 +19,7 @@
       <el-table-column label="总称重量(吨)" align="center" width="120" prop="capacity">
       </el-table-column>
       <el-table-column prop="status" label="状态" align="center" width="100"
-      :filters="this.status"
+      :filters="[{ text: '在线', value: '在线' }, { text: '离线', value: '离线' }]"
       :filter-method="filterTag"
       filter-placement="bottom-end">
       <template slot-scope="scope">
@@ -332,12 +332,12 @@
         var that = this
         this.dialogVisible = true
         console.log(index,row)
-        that.index = row
+        that.index = index
         // this.tableData.splice(index,1)
       },
       dele(){
           console.log(this.index)
-          this.tableData.splice(this.index,1)
+          this.tableDataEnd.splice(this.index,1)
           this.dialogVisible = false
       }
     }

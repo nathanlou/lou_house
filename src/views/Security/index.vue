@@ -11,7 +11,7 @@
     <!-- 顶部四个系统预览结束 -->
     <!-- 趋势折线图开始 -->
     <div class="chart_container">
-      <div class="Line_graph_title">当前仓料信息</div>
+      <div class="Line_graph_title">仓料信息</div>
       <div id="chart" ref="chart"></div>
     </div>
     <!-- 趋势折线图结束 -->

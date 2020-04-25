@@ -57,14 +57,6 @@ export const constantRoutes = [
     },
     ]
   },
-  {
-    path: '/device_details',
-    component: () => import('@/views/device_details/index')
-   },
-   {
-     path: '/modify_una',
-     component: () => import('@/views/modify_una/index')
-    },
 	{
     path: '/Large',
     component: () => import('@/views/Large/index')

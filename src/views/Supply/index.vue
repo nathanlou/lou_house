@@ -2,7 +2,7 @@
 	<div class="dashboard-container">
 		<!-- 顶部四个系统预览开始 -->
 		<div class="system_container">
-			<div class="system" v-for="(item,index) in system_list" :key='index' :style="{background:item.background}" @click="details(item.id)">
+			<div class="system" v-for="(item,index) in system_list" :key='index' :style="{background:item.background}">
 				<img :src="item.img" />
 				<div class="system_name">{{item.name}}</div>
 				<div class="system_number">{{item.number}}辆</div>
@@ -67,25 +67,6 @@
 			}
 		},
 		methods: {
-			details: function(id) {
-				if (id == 1) {
-					this.$router.push({
-						path: '/Unattended'
-					})
-				} else if (id == 2) {
-					this.$router.push({
-						path: '/Security'
-					})
-				} else if (id == 3) {
-					this.$router.push({
-						path: '/Mixing'
-					})
-				} else if (id == 4) {
-					this.$router.push({
-						path: '/Laboratory'
-					})
-				}
-			},
 			initCharts() {
 				let myChart = this.$echarts.init(this.$refs.chart);
 				console.log(this.$refs.chart)
@@ -118,33 +99,28 @@
 					},
 					yAxis: {},
 					legend: {
-						data: ['供应链管理', '无人值守地磅', '安保服务', '拌合站中控', '环保管理']
+						data: ['水泥', '矿粉', '粉煤灰', '膨胀剂']
 					},
 					series: [{
-							name: '供应链管理', // 系列名称
-							smooth: true,
-							type: 'line', // 类型：线
-							data: [39, 62, 123, 44, 65, 36, 82], // 数据
-						}, {
-							name: '无人值守地磅', // 系列名称
+							name: '水泥', // 系列名称
 							smooth: true,
 							type: 'line', // 类型：线
 							data: [31, 52, 33, 84, 35, 46, 67], // 数据
 						},
 						{
-							name: '安保服务', // 系列名称
+							name: '矿粉', // 系列名称
 							smooth: true,
 							type: 'line', // 类型：线
 							data: [12, 26, 43, 47, 65, 46, 37], // 数据
 						},
 						{
-							name: '拌合站中控', // 系列名称
+							name: '粉煤灰', // 系列名称
 							smooth: true,
 							type: 'line', // 类型：线
 							data: [51, 42, 43, 64, 35, 76, 67], // 数据
 						},
 						{
-							name: '环保管理', // 系列名称
+							name: '膨胀剂', // 系列名称
 							smooth: true,
 							type: 'line', // 类型：线
 							data: [31, 42, 63, 24, 65, 86, 47], // 数据
