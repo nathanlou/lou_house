@@ -7,16 +7,20 @@
    <el-table :data="tableDataEnd" border style="width: auto;margin-top: 0.9375rem;">
 	   <el-table-column prop="date" align="center" label="日期" sortable width="180">
 	   </el-table-column>
-      <el-table-column label="设备编号" align="center" width="160" sortable prop="equipment" column-key="equipment">
-      </el-table-column>
-      <el-table-column label="内部编号" align="center" width="120" prop="inside">
-      </el-table-column>
       <el-table-column label="所属企业" align="center" width="150" prop="enterprise" :filters="this.enterprise"
       :filter-method="filterHandler">
       </el-table-column>
-      <el-table-column label="工地名称" align="center" width="160" prop="field">
-      </el-table-column>、
-      <el-table-column label="总称重量(吨)" align="center" width="120" prop="capacity">
+	  <el-table-column label="车牌号" align="center" width="160" prop="car_number">
+	  </el-table-column>
+	  <el-table-column label="物料" align="center" width="90" prop="materiel">
+	  </el-table-column>
+      <el-table-column label="毛重(吨)" align="center" width="90" prop="GW">
+      </el-table-column>
+	  <el-table-column label="皮重(吨)" align="center" width="90" prop="TW">
+	  </el-table-column>
+	  <el-table-column label="净重(吨)" align="center" width="90" prop="NW">
+	  </el-table-column>
+      <el-table-column label="金额(元)" align="center" width="100" prop="money">
       </el-table-column>
       <el-table-column prop="status" label="状态" align="center" width="100"
       :filters="[{ text: '在线', value: '在线' }, { text: '离线', value: '离线' }]"
@@ -93,153 +97,77 @@
           {
             id:"1",
 			date: '2016-05-02',
-            equipment: 'QHW001G200290001',
-            inside:'阿发1',
+            car_number: '豫G90001',
             enterprise:'大企业',
-            field:'阿达西',
-            capacity:'50',
-            status:'在线'
+            money:'10000',
+            status:'在线',
+			GW:'35',
+			TW:'5',
+			NW:'30',
+			materiel:'物料1'
           },
           {
             id:"2",
 			date: '2016-05-02',
-            equipment: 'QHW001G200290002',
-            inside:'阿发2',
+            car_number: '豫G90002',
             enterprise:'大企业',
-            field:'不急不急',
-            capacity:'57',
+            money:'10000',
             status:'在线',
+			GW:'35',
+			TW:'5',
+			NW:'30',
+			materiel:'物料2'
           },
           {
             id:"3",
 			date: '2016-05-02',
-            equipment: 'QHW001G200290003',
-            inside:'阿发2',
+            car_number: '豫G90003',
             enterprise:'大企业',
-            field:'不急不急',
-            capacity:'57',
-            allowance:'4503',
-            police:'5%',
+            money:'10000',
             status:'在线',
-            boot:'正常开机'
+			GW:'35',
+			TW:'5',
+			NW:'30',
+			materiel:'物料3'
           },
           {
             id:"4",
 			date: '2016-05-02',
-            equipment: 'QHW001G200290004',
-            inside:'阿发2',
+            car_number: '豫G90004',
             enterprise:'大企业',
-            field:'不急不急',
-            capacity:'57',
-            allowance:'4503',
-            police:'5%',
-            status:'在线',
-            boot:'正常开机'
+            money:'10000',
+            status:'离线',
+			GW:'35',
+			TW:'5',
+			NW:'30',
+			materiel:'物料1'
           },
           {
             id:"5",
 			date: '2016-05-02',
-            equipment: 'QHW001G200290005',
-            inside:'阿发2',
+            car_number: '豫G90005',
             enterprise:'大企业',
-            field:'不急不急',
-            capacity:'57',
-            allowance:'4503',
-            police:'5%',
+            money:'10000',
             status:'在线',
-            boot:'正常开机'
+            boot:'正常开机',
+			GW:'35',
+			TW:'5',
+			NW:'30',
+			materiel:'物料2'
           },
           {
             id:"6",
 			date: '2016-05-02',
-            equipment: 'QHW001G200290006',
-            inside:'阿发2',
+            car_number: '豫G90006',
             enterprise:'小企业',
-            field:'不急不急',
-            capacity:'57',
-            allowance:'4503',
-            police:'5%',
-            status:'在线',
-            boot:'正常开机'
-          },
-          {
-            id:"7",
-			date: '2016-05-02',
-            equipment: 'QHW001G200290007',
-            inside:'阿发2',
-            enterprise:'大企业',
-            field:'不急不急',
-            capacity:'57',
-            allowance:'4503',
-            police:'5%',
+            money:'10000',
             status:'离线',
-            boot:'正常开机'
-          },
-          {
-            id:"8",
-			date: '2016-05-02',
-            equipment: 'QHW001G200290008',
-            inside:'阿发2',
-            enterprise:'小企业',
-            field:'不急不急',
-            capacity:'57',
-            allowance:'4503',
-            police:'5%',
-            status:'在线',
-            boot:'正常开机'
-          },
-          {
-            id:"9",
-			date: '2016-05-02',
-            equipment: 'QHW001G200290009',
-            inside:'阿发2',
-            enterprise:'大企业',
-            field:'不急不急',
-            capacity:'57',
-            allowance:'4503',
-            police:'5%',
-            status:'离线',
-            boot:'正常开机'
-          },
-          {
-            id:"10",
-			date: '2016-05-02',
-            equipment: 'QHW001G200290010',
-            inside:'阿发10',
-           enterprise:'小企业',
-            field:'不急不急',
-            capacity:'57',
-            allowance:'4503',
-            police:'5%',
-            status:'离线',
-            boot:'正常开机'
-          },
-          {
-            id:"11",
-			date: '2016-05-02',
-            equipment: 'QHW001G200290011',
-            inside:'阿发2',
-            enterprise:'大企业',
-            field:'不急不急',
-            capacity:'57',
-            allowance:'4503',
-            police:'5%',
-            status:'在线',
-            boot:'正常开机'
-          },
-          {
-            id:"12",
-			date: '2016-05-02',
-            equipment: 'QHW001G200290012',
-            inside:'阿发2',
-            enterprise:'小企业',
-            field:'不急不急',
-            capacity:'57',
-            allowance:'4503',
-            police:'5%',
-            status:'离线',
-            boot:'正常开机'
-          },
+            boot:'正常开机',
+			GW:'35',
+			TW:'5',
+			NW:'30',
+			materiel:'物料2'
+          }
         ],
         search: ''
       }

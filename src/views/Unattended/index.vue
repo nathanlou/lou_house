@@ -174,4 +174,7 @@
 		color: white;
 		padding-bottom: 2%;
 	}
+	.el-button{
+		margin-left: 0rem;
+	}
 </style>

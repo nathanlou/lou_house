@@ -1,77 +1,47 @@
 <template>
 	<div class="app-container">
 		<el-form :inline="true" ref="form" :model="form" label-width="80px" class="demo-form-inline">
-			<el-input v-model="tableDataName" placeholder="请输入企业名称" style="width:15rem"></el-input>
+			<el-input v-model="tableDataName" placeholder="请输入企业名称" style="width:10rem"></el-input>
 			<el-button type="primary" @click="doFilter">搜索</el-button>
 			<el-button type="primary" @click="dialogFormVisible = true">添加</el-button>
 			<el-button type="primary" @click="clearFilter">清除所有过滤器</el-button>
 			<el-button type="primary" @click="exportExcel">导出Excel</el-button>
 		</el-form>
 		<!-- 添加 -->
-		<el-dialog title="添加设备信息" :visible.sync="dialogFormVisible">
+		<el-dialog title="添加设备信息" :visible.sync="dialogFormVisible" width="85%" :before-close="handleClose">
 			<el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-				<el-row type="flex" class="row-bg">
-					<el-col :span="10">
 						<el-form-item label="企业" prop="region">
 							<el-select v-model="ruleForm.region" placeholder="请选择">
 								<el-option label="区域一" value="shanghai"></el-option>
 							</el-select>
 						</el-form-item>
-					</el-col>
-					<el-col :span="14">
 						<el-form-item label="设备编号" prop="equipment_num">
 							<el-input v-model="ruleForm.equipment_num"></el-input>
 						</el-form-item>
-					</el-col>
-				</el-row>
-				<el-row type="flex" class="row-bg">
-					<el-col :span="10">
 						<el-form-item label="内部编号" prop="name">
 							<el-input v-model="ruleForm.name"></el-input>
 						</el-form-item>
-					</el-col>
-					<el-col :span="14">
 						<el-form-item label="SMI卡号" prop="SMI">
 							<el-input v-model="ruleForm.SMI"></el-input>
 						</el-form-item>
-					</el-col>
-				</el-row>
-				<el-row type="flex" class="row-bg">
-					<el-col :span="10">
 						<el-form-item label="工地名称" prop="field">
 							<el-input v-model="ruleForm.field"></el-input>
 						</el-form-item>
-					</el-col>
-					<el-col :span="14">
 						<el-form-item label="负责人" prop="people">
 							<el-input v-model="ruleForm.people"></el-input>
 						</el-form-item>
-					</el-col>
-				</el-row>
-				<el-row type="flex" class="row-bg">
-					<el-col :span="10">
 						<el-form-item label="手机号" prop="phone">
 							<el-input v-model="ruleForm.phone"></el-input>
 						</el-form-item>
-					</el-col>
-					<el-col :span="14">
 						<el-form-item label="型号" prop="model">
 							<el-input v-model="ruleForm.model"></el-input>
 						</el-form-item>
-					</el-col>
-				</el-row>
-				<el-row type="flex" class="row-bg">
-					<el-col :span="10">
 						<el-form-item label="容量" prop="capacity">
 							<el-input v-model="ruleForm.capacity"></el-input>
 						</el-form-item>
-					</el-col>
-					<el-col :span="14">
 						<el-form-item label="归属企业" prop="model">
 							<el-input v-model="ruleForm.ascription"></el-input>
 						</el-form-item>
-					</el-col>
-				</el-row>
 				<el-form-item>
 					<el-button type="primary" @click="submitForm('ruleForm')">立即添加</el-button>
 				</el-form-item>
@@ -87,11 +57,7 @@
 			</el-table-column>
 			<el-table-column label="工地名称" align="center" width="160" prop="field">
 			</el-table-column>、
-			<el-table-column label="容量(吨)" align="center" width="80" prop="capacity">
-			</el-table-column>
-			<el-table-column label="余量(KG)" align="center" width="80" prop="allowance">
-			</el-table-column>
-			<el-table-column label="缺料报警" align="center" width="80" prop="police">
+			<el-table-column label="模式" align="center" width="130" prop="pattern">
 			</el-table-column>
 			<el-table-column prop="status" label="状态" align="center" width="100" :filters="this.status" :filter-method="filterTag"
 			 filter-placement="bottom-end">
@@ -106,7 +72,7 @@
 					<el-button size="mini" @click="handleEdit(scope.$index, scope.row)">查看</el-button>
 					<el-button size="mini" type="primary" @click="modifys(scope.$index, scope.row)">修改</el-button>
 					<el-button size="mini" type="danger" @click='handleDelete(scope.$index, scope.row)'>删除</el-button>
-					<el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
+					<el-dialog title="提示" :visible.sync="dialogVisible" width="80%">
 						<span class="el-icon-warning tips"> 确定要删除吗？</span>
 						<span slot="footer" class="dialog-footer">
 							<el-button @click="dialogVisible = false">取 消</el-button>
@@ -124,7 +90,7 @@
 		</div>
 		<!-- 分页结束 -->
 		<!-- 设备信息开始 -->
-		<el-drawer title="我是标题" :visible.sync="drawer" :with-header="false" size='40%'>
+		<el-dialog title="查看设备信息" :visible.sync="adds" width="85%" :before-close="handleClose">
 			<div class="details_container">
 				<table class="inner">
 					<caption>设备信息</caption>
@@ -147,8 +113,8 @@
 						<td>19689745136</td>
 					</tr>
 					<tr>
-						<td class="msg_title">型号:</td>
-						<td>称重</td>
+						<td class="msg_title">模式:</td>
+						<td>单磅单向</td>
 						<td class="msg_title">容量:</td>
 						<td>45吨</td>
 					</tr>
@@ -166,7 +132,7 @@
 					</tr>
 				</table>
 			</div>
-			<div class="view_container">
+			<!-- <div class="view_container">
 				<div class="view">
 					<div>实时重量</div>
 					<div>9131kg</div>
@@ -176,11 +142,11 @@
 					</div>
 					<div class="speed_number">{{percentage}}%</div>
 				</div>
-			</div>
-		</el-drawer>
+			</div> -->
+		</el-dialog>
 		<!-- 设备信息结束 -->
 		<!-- 修改设备开始 -->
-		<el-drawer title="我是标题" :visible.sync="modifyss" :with-header="false">
+		<el-dialog title="修改设备信息" :visible.sync="modifyss" width="85%" :before-close="handleClose">
 			<div class="modify_container">
 			  <div class="title">修改设备信息</div>
 			</div>
@@ -210,21 +176,19 @@
 			        <el-form-item label="手机号" prop="phone">
 			          <el-input v-model="ruleForm.phone"></el-input>
 			        </el-form-item>
-			        <el-form-item label="型号" prop="model">
-			          <el-input v-model="ruleForm.model"></el-input>
-			        </el-form-item>
-			        <el-form-item label="容量" prop="capacity">
-			          <el-input v-model="ruleForm.capacity"></el-input>
-			        </el-form-item>
-			        <el-form-item label="归属企业" prop="model">
-			          <el-input v-model="ruleForm.ascription"></el-input>
+			        <el-form-item label="模式" prop="pattern">
+			          <el-select v-model="ruleForm.pattern" placeholder="请选择">
+			            <el-option label="单磅单向" value="shanghai"></el-option>
+						<el-option label="单磅双向" value="beijing"></el-option>
+						<el-option label="双磅双向" value="shenzhen"></el-option>
+			          </el-select>
 			        </el-form-item>
 			    <el-form-item>
 			      <el-button type="primary" @click="submits('ruleForm')">确认修改</el-button>
 			    </el-form-item>
 			  </el-form>
 			</div>
-		</el-drawer>
+		</el-dialog>
 		<!-- 修改设备结束 -->
 	</div>
 </template>
@@ -276,11 +240,6 @@
 				    required: true,
 				    message: '请输入容量',
 				    trigger: 'blur'
-				  }],
-				  ascription:[{
-				    required: true,
-				    message: '请输入归属企业',
-				    trigger: 'blur'
 				  }]
 				},
 				percentage: '90',
@@ -293,9 +252,7 @@
 					field: '',
 					people: '',
 					phone: '',
-					model: '',
-					capacity: '',
-					ascription: ''
+					pattern:''
 				},
 				dialogFormVisible: false,
 				index: '',
@@ -338,6 +295,7 @@
 				},
 				formLabelWidth: '120px',
 				dialogVisible: false,
+				adds:false,
 				pagesize: 10, //每页的数据条数
 				currentPage: 1, //默认开始页面
 				tableDataName: "",
@@ -352,9 +310,7 @@
 						inside: '阿发1',
 						enterprise: '大企业',
 						field: '阿达西',
-						capacity: '50',
-						allowance: '4513',
-						police: '5%',
+						pattern:'单磅单向',
 						status: '在线',
 						boot: '正常开机'
 					},
@@ -364,9 +320,7 @@
 						inside: '阿发2',
 						enterprise: '大企业',
 						field: '不急不急',
-						capacity: '57',
-						allowance: '4503',
-						police: '5%',
+						pattern:'单磅双向',
 						status: '在线',
 						boot: '正常开机'
 					},
@@ -376,9 +330,7 @@
 						inside: '阿发2',
 						enterprise: '大企业',
 						field: '不急不急',
-						capacity: '57',
-						allowance: '4503',
-						police: '5%',
+						pattern:'双磅双向',
 						status: '在线',
 						boot: '正常开机'
 					},
@@ -388,9 +340,7 @@
 						inside: '阿发2',
 						enterprise: '大企业',
 						field: '不急不急',
-						capacity: '57',
-						allowance: '4503',
-						police: '5%',
+						pattern:'双磅双向',
 						status: '在线',
 						boot: '正常开机'
 					},
@@ -400,9 +350,7 @@
 						inside: '阿发2',
 						enterprise: '大企业',
 						field: '不急不急',
-						capacity: '57',
-						allowance: '4503',
-						police: '5%',
+						pattern:'双磅双向',
 						status: '在线',
 						boot: '正常开机'
 					},
@@ -412,9 +360,7 @@
 						inside: '阿发2',
 						enterprise: '小企业',
 						field: '不急不急',
-						capacity: '57',
-						allowance: '4503',
-						police: '5%',
+						pattern:'双磅双向',
 						status: '在线',
 						boot: '正常开机'
 					},
@@ -424,9 +370,7 @@
 						inside: '阿发2',
 						enterprise: '大企业',
 						field: '不急不急',
-						capacity: '57',
-						allowance: '4503',
-						police: '5%',
+						pattern:'双磅双向',
 						status: '离线',
 						boot: '正常开机'
 					},
@@ -436,9 +380,7 @@
 						inside: '阿发2',
 						enterprise: '小企业',
 						field: '不急不急',
-						capacity: '57',
-						allowance: '4503',
-						police: '5%',
+						pattern:'双磅双向',
 						status: '在线',
 						boot: '正常开机'
 					},
@@ -448,9 +390,7 @@
 						inside: '阿发2',
 						enterprise: '大企业',
 						field: '不急不急',
-						capacity: '57',
-						allowance: '4503',
-						police: '5%',
+						pattern:'双磅双向',
 						status: '离线',
 						boot: '正常开机'
 					},
@@ -460,9 +400,7 @@
 						inside: '阿发10',
 						enterprise: '小企业',
 						field: '不急不急',
-						capacity: '57',
-						allowance: '4503',
-						police: '5%',
+						pattern:'双磅双向',
 						status: '离线',
 						boot: '正常开机'
 					},
@@ -472,9 +410,7 @@
 						inside: '阿发2',
 						enterprise: '大企业',
 						field: '不急不急',
-						capacity: '57',
-						allowance: '4503',
-						police: '5%',
+						pattern:'双磅双向',
 						status: '在线',
 						boot: '正常开机'
 					},
@@ -484,9 +420,7 @@
 						inside: '阿发2',
 						enterprise: '小企业',
 						field: '不急不急',
-						capacity: '57',
-						allowance: '4503',
-						police: '5%',
+						pattern:'双磅双向',
 						status: '离线',
 						boot: '正常开机'
 					},
@@ -529,19 +463,9 @@
 						message: '请输入手机号',
 						trigger: 'blur'
 					}],
-					model: [{
+					pattern: [{
 						required: true,
-						message: '请输入型号',
-						trigger: 'blur'
-					}],
-					capacity: [{
-						required: true,
-						message: '请输入容量',
-						trigger: 'blur'
-					}],
-					ascription: [{
-						required: true,
-						message: '请输入归属企业',
+						message: '请选择模式',
 						trigger: 'blur'
 					}]
 				}
@@ -642,7 +566,6 @@
 							name: this.ruleForm.name,
 							equipment: this.ruleForm.equipment_num,
 							inside: this.ruleForm.inside,
-							enterprise: this.ruleForm.ascription,
 							field: this.ruleForm.field,
 							capacity: this.ruleForm.capacity,
 						});
@@ -674,7 +597,7 @@
 			},
 			handleEdit(index, row) {
 				// console.log(index, row);
-				this.drawer = true
+				this.adds = true
 			},
 			modifys(index, row) {
 				// console.log(index, row);
@@ -708,7 +631,6 @@
 	}
 
 	.block {
-		position: absolute;
 		left: 2%;
 	}
 
@@ -818,5 +740,8 @@
 	}
 	.el-form-item__error {
 	  left: 3.125rem;
+	}
+	.el-button{
+		margin-left: 0rem !important;
 	}
 </style>

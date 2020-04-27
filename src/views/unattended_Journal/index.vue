@@ -1,12 +1,12 @@
 <template>
 	<div class="tab_container">
 		<el-table :data="tableDataEnd" border style="width: auto">
-			<el-table-column prop="date" align="center" label="日期" sortable width="180">
+			<el-table-column prop="date" align="center" label="日期" sortable width="200">
 			</el-table-column>
-			<el-table-column prop="time" align="center" label="时间" sortable width="180">
+			<el-table-column prop="operation" align="center" label="操作内容" width="600">
 			</el-table-column>
-			<el-table-column prop="operation" align="center" label="操作内容">
-			</el-table-column>
+			<el-table-column prop="time" align="center" label="时间" sortable>
+			</el-table-column>		
 		</el-table>
 		<el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="currentPage"
 		 :page-size="pageSize" layout="total,  prev, pager, next, jumper" :total="totalItems">
@@ -20,11 +20,11 @@
 			return {
 				tableDataBegin: [{
 					date: '2016-05-02',
-					time: '13.45',
+					time: '13.25',
 					operation: '上海市普陀区金沙江路 1518 弄'
 				}, {
 					date: '2016-05-04',
-					time: '13.45',
+					time: '13.05',
 					operation: '上海市普陀区金沙江路 1517 弄'
 				}, {
 					date: '2016-05-01',
@@ -32,7 +32,7 @@
 					operation: '上海市普陀区金沙江路 1519 弄'
 				}, {
 					date: '2016-05-03',
-					time: '13.45',
+					time: '10.45',
 					operation: '上海市普陀区金沙江路 1516 弄'
 				}],
 				tableDataName: "",

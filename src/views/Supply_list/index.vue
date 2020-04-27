@@ -3,7 +3,7 @@
 		<el-tabs v-model="activeName">
 			<el-tab-pane label="预约车辆" name="first">
 				<div class="search">
-					<el-input v-model="tableDataName" placeholder="请输入姓名或物料名" style="width:15rem"></el-input>
+					<el-input v-model="tableDataName" placeholder="请输入姓名或物料名" style="width:10rem"></el-input>
 					<el-button type="primary" @click="doFilter">搜索</el-button>
 					<el-button type="primary" @click="exportExcel">导出Excel</el-button>
 				</div>
@@ -31,7 +31,7 @@
 			</el-tab-pane>
 			<el-tab-pane label="待称重车辆" name="second">
 				<div class="search">
-					<el-input v-model="tableDataName" placeholder="请输入姓名或物料名" style="width:15rem"></el-input>
+					<el-input v-model="tableDataName" placeholder="请输入姓名或物料名" style="width:10rem"></el-input>
 					<el-button type="primary" @click="doFilter">搜索</el-button>
 					<el-button type="primary" @click="exportExcel2">导出Excel</el-button>
 				</div>
@@ -59,7 +59,7 @@
 			</el-tab-pane>
 			<el-tab-pane label="待去皮车辆" name="third">
 				<div class="search">
-					<el-input v-model="tableDataName" placeholder="请输入姓名或物料名" style="width:15rem"></el-input>
+					<el-input v-model="tableDataName" placeholder="请输入姓名或物料名" style="width:10rem"></el-input>
 					<el-button type="primary" @click="doFilter">搜索</el-button>
 					<el-button type="primary" @click="exportExcel3">导出Excel</el-button>
 				</div>
@@ -304,5 +304,8 @@
 	.search {
 		margin-top: 0.9375rem;
 		margin-bottom: 0.9375rem;
+	}
+	.el-button{
+		margin-left: 0rem;
 	}
 </style>
