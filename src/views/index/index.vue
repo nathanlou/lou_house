@@ -12,7 +12,10 @@
 		<!-- 顶部四个系统预览结束 -->
 		<!-- 趋势折线图开始 -->
 		<div class="chart_container">
-			<div class="Line_graph_title">近一周故障趋势</div>
+			<div class="Line_graph_title">周故障趋势</div>
+			<el-date-picker v-model="value1" type="date" placeholder="开始日期" :picker-options="pickerOptions0">
+			</el-date-picker>&nbsp;&nbsp;&nbsp;-<el-date-picker v-model="value2" type="date" placeholder="结束日期" :picker-options="pickerOptions1">
+			</el-date-picker>
 			<div id="chart" ref="chart"></div>
 		</div>
 		<!-- 趋势折线图结束 -->
@@ -29,8 +32,24 @@
 	export default {
 		data() {
 			return {
-				system_list: [
-					{
+				pickerOptions0: {
+					disabledDate: (time) => {
+						if (this.value2 != "") {
+							return time.getTime() > Date.now() || time.getTime() > this.value2;
+						} else {
+							return time.getTime() > Date.now();
+						}
+
+					}
+				},
+				pickerOptions1: {
+					disabledDate: (time) => {
+						return time.getTime() < this.value1 || time.getTime() > Date.now();
+					}
+				},
+				value1: '',
+				value2:'',
+				system_list: [{
 						id: '1',
 						img: require('../../assets/404_images/供应链.png'),
 						name: '供应链管理',
@@ -40,7 +59,7 @@
 					{
 						id: '2',
 						img: require('../../assets/404_images/无人值守.png'),
-						name: '无人值守地磅系统',
+						name: '无人值守地磅',
 						number: '200',
 						background: '#f87e3d'
 					},
@@ -69,6 +88,9 @@
 			}
 		},
 		methods: {
+			change() {
+				console.log(this.value1 + 'aaaaaaaaaaaaaaa')
+			},
 			big() {
 				this.$router.push({
 					path: '/Large'
@@ -91,38 +113,25 @@
 					this.$router.push({
 						path: '/Mixing'
 					})
-				}else if(id == 5){
+				} else if (id == 5) {
 					this.$router.push({
 						path: '/Laboratory'
 					})
-						
-					}
+
+				}
 			},
 			initCharts() {
 				let myChart = this.$echarts.init(this.$refs.chart);
+				// myChart.setOption(option,window.onresize = myChart.resize);
 				console.log(this.$refs.chart)
 				// 绘制图表
 				myChart.setOption({
+
 					title: {},
 					tooltip: {
 						formatter: '{a0}:{c0}台',
 						axisPointer: { // 坐标轴指示器，坐标轴触发有效
 							type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
-						}
-					},
-					toolbox: {
-						feature: {
-							saveAsImage: {},
-							dataZoom: {
-								yAxisIndex: 'none'
-							},
-							dataView: {
-								readOnly: false
-							},
-							magicType: {
-								type: ['bar', 'line']
-							},
-							restore: {}
 						}
 					},
 					xAxis: {
@@ -163,6 +172,7 @@
 						},
 					]
 				});
+				window.onresize = myChart.resize;
 			}
 		},
 		mounted() {
@@ -181,10 +191,11 @@
 		text-align: center;
 		margin-top: 3%;
 		color: white;
+		font-size: 0.7rem;
 	}
 
 	.system {
-		width: 19%
+		width: 19.5%
 	}
 
 	.system img {
@@ -222,5 +233,9 @@
 	.tips {
 		color: white;
 		padding-bottom: 2%;
+	}
+
+	.el-date-editor {
+		margin-left: 1rem;
 	}
 </style>

@@ -12,6 +12,8 @@
 		<!-- 趋势折线图开始 -->
 		<div class="chart_container">
 			<div class="Line_graph_title">近一周设备信息趋势</div>
+			<el-date-picker v-model="value1" type="week" format="yyyy 第 WW 周" placeholder="选择周" value-format="yyyy-MM-dd" @change='change'>
+			</el-date-picker>
 			<div id="chart" ref="chart"></div>
 		</div>
 		<!-- 趋势折线图结束 -->
@@ -28,6 +30,7 @@
 	export default {
 		data() {
 			return {
+				value1:'',
 				system_list: [{
 						id: '1',
 						img: require('../../assets/404_images/登记总数.png'),
@@ -73,21 +76,6 @@
 						formatter: '{a0}:{c0}台',
 						axisPointer: { // 坐标轴指示器，坐标轴触发有效
 							type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
-						}
-					},
-					toolbox: {
-						feature: {
-							saveAsImage: {},
-							dataZoom: {
-								yAxisIndex: 'none'
-							},
-							dataView: {
-								readOnly: false
-							},
-							magicType: {
-								type: ['bar', 'line']
-							},
-							restore: {}
 						}
 					},
 					xAxis: {
@@ -173,5 +161,8 @@
 	.tips {
 		color: white;
 		padding-bottom: 2%;
+	}
+	.el-date-editor{
+		margin-left: 1rem;
 	}
 </style>

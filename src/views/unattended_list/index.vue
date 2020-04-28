@@ -1,5 +1,5 @@
 <template>
-	<div class="app-container">
+	<div class="container">
 		<el-form :inline="true" ref="form" :model="form" label-width="80px" class="demo-form-inline">
 			<el-input v-model="tableDataName" placeholder="请输入企业名称" style="width:10rem"></el-input>
 			<el-button type="primary" @click="doFilter">搜索</el-button>
@@ -626,8 +626,9 @@
 	}
 </script>
 <style>
-	.app-container {
-		padding-bottom: 3%;
+	.container {
+		width: 96%;
+		margin-left: 2%;
 	}
 
 	.block {
@@ -743,5 +744,8 @@
 	}
 	.el-button{
 		margin-left: 0rem !important;
+	}
+	.demo-form-inline{
+		margin-top: 3%;
 	}
 </style>

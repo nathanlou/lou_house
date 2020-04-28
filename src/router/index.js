@@ -70,7 +70,7 @@ export const constantRoutes = [
      children: [
        {
          path: 'Supply',
-         name: 'Supply',
+         name: '供应链管理',
          component: () => import('@/views/Supply/index'),
          meta: { title: '运行总览', icon: '总览' }
        },
@@ -97,7 +97,7 @@ export const constantRoutes = [
     children: [
       {
         path: 'Unattended',
-        name: 'Unattended',
+        name: '无人值守地磅',
         component: () => import('@/views/Unattended/index'),
         meta: { title: '运行总览', icon: '总览' }
       },
@@ -130,7 +130,7 @@ export const constantRoutes = [
     children: [
       {
         path: 'Security',
-        name: 'Security',
+        name: '安保智能',
         component: () => import('@/views/Security/index'),
         meta: { title: '运行总览', icon: '总览' }
       },
@@ -163,7 +163,7 @@ export const constantRoutes = [
     children: [
       {
         path: 'Mixing',
-        name: 'Mixing',
+        name: '拌合站中控',
         component: () => import('@/views/Mixing/index'),
         meta: { title: '运行总览', icon: '总览' }
       },
@@ -196,7 +196,7 @@ export const constantRoutes = [
     children: [
       {
         path: 'Laboratory',
-        name: 'Laboratory',
+        name: '环保设备管理',
         component: () => import('@/views/Laboratory/index'),
         meta: { title: '运行总览', icon: '总览' }
       },
@@ -229,7 +229,7 @@ export const constantRoutes = [
     children: [
       {
         path: 'map',
-        name: 'map',
+        name: '地图分布',
         component: () => import('@/views/map/index'),
         meta: { title: '地图分布', icon: '地图' }
       }

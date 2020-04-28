@@ -237,10 +237,12 @@
 <style scoped="scoped">
 	.Handle{
 		line-height: 2;
+		padding: 2%;
 	}
 	.button{
-		margin-left: 55%;
+		margin-left: 30%;
 		margin-top: 0.9375rem;
+		width: 100%;
 	}
 	.el-textarea{
 		width: 60%;

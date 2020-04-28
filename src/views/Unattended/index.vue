@@ -12,6 +12,9 @@
 		<!-- 趋势折线图开始 -->
 		<div class="chart_container">
 			<div class="Line_graph_title">近一周过磅信息趋势</div>
+			<el-date-picker v-model="value1" type="date" placeholder="开始日期" :picker-options="pickerOptions0">
+			</el-date-picker>&nbsp;&nbsp;&nbsp;-<el-date-picker v-model="value2" type="date" placeholder="结束日期" :picker-options="pickerOptions1">
+			</el-date-picker>
 			<div id="chart" ref="chart"></div>
 		</div>
 		<!-- 趋势折线图结束 -->
@@ -28,6 +31,23 @@
 	export default {
 		data() {
 			return {
+				pickerOptions0: {
+					disabledDate: (time) => {
+						if (this.value2 != "") {
+							return time.getTime() > Date.now() || time.getTime() > this.value2;
+						} else {
+							return time.getTime() > Date.now();
+						}
+				
+					}
+				},
+				pickerOptions1: {
+					disabledDate: (time) => {
+						return time.getTime() < this.value1 || time.getTime() > Date.now();
+					}
+				},
+				value1: '',
+				value2:'',
 				system_list: [{
 						id: '1',
 						img: require('../../assets/404_images/登记总数.png'),
@@ -73,21 +93,6 @@
 						formatter: '{a0}:{c0}台',
 						axisPointer: { // 坐标轴指示器，坐标轴触发有效
 							type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
-						}
-					},
-					toolbox: {
-						feature: {
-							saveAsImage: {},
-							dataZoom: {
-								yAxisIndex: 'none'
-							},
-							dataView: {
-								readOnly: false
-							},
-							magicType: {
-								type: ['bar', 'line']
-							},
-							restore: {}
 						}
 					},
 					xAxis: {
@@ -176,5 +181,8 @@
 	}
 	.el-button{
 		margin-left: 0rem;
+	}
+	.el-date-editor{
+		margin-left: 1rem;
 	}
 </style>
