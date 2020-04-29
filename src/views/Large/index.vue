@@ -28,7 +28,7 @@
 								<li v-for="(item,index) in list" :key="index">
 									<div>{{item.id}}</div>
 									<div>{{item.driver}}</div>
-									<div>{{item.car_number}}</div>								
+									<div>{{item.car_number}}</div>
 								</li>
 							</ul>
 						</div>
@@ -36,7 +36,7 @@
 				</el-card>
 			</div>
 		</div>
-	</div>
+		<div id="myChart"></div>
 	</div>
 </template>
 
@@ -52,46 +52,45 @@
 			return {
 				animate: false,
 				showNum: 4, // 可见列表条数
-				list: [
-					{
-						id:'1',
-						driver:'张三',
-						car_number:'豫G12345'
+				list: [{
+						id: '1',
+						driver: '张三',
+						car_number: '豫G12345'
 					},
 					{
-						id:'2',
-						driver:'李三',
-						car_number:'豫G12345'
+						id: '2',
+						driver: '李三',
+						car_number: '豫G12345'
 					},
 					{
-						id:'3',
-						driver:'王三',
-						car_number:'豫G12345'
+						id: '3',
+						driver: '王三',
+						car_number: '豫G12345'
 					},
 					{
-						id:'4',
-						driver:'周三',
-						car_number:'豫G12345'
+						id: '4',
+						driver: '周三',
+						car_number: '豫G12345'
 					},
 					{
-						id:'5',
-						driver:'张三',
-						car_number:'豫G12345'
+						id: '5',
+						driver: '张三',
+						car_number: '豫G12345'
 					},
 					{
-						id:'6',
-						driver:'李三',
-						car_number:'豫G12345'
+						id: '6',
+						driver: '李三',
+						car_number: '豫G12345'
 					},
 					{
-						id:'7',
-						driver:'王三',
-						car_number:'豫G12345'
+						id: '7',
+						driver: '王三',
+						car_number: '豫G12345'
 					},
 					{
-						id:'8',
-						driver:'周三',
-						car_number:'豫G12345'
+						id: '8',
+						driver: '周三',
+						car_number: '豫G12345'
 					}
 				],
 				system_list: [{
@@ -128,10 +127,10 @@
 		methods: {
 			initData() {
 				// 基于准备好的dom，初始化echarts实例
-				var myChart = echarts.init(document.getElementById('main1'));
+				var myChart1 = echarts.init(document.getElementById('main1'));
 				var myChart2 = echarts.init(document.getElementById('main2'));
 				// 绘制图表
-				myChart.setOption({
+				myChart1.setOption({
 					title: {
 						text: '车辆类型统计', //主标题
 						x: 'center', //x轴方向对齐方式
@@ -222,10 +221,73 @@
 					this.list.shift()
 					this.animate = false
 				}, 1000)
+			},
+			init() {
+				function randomData() {
+					now = new Date(+now + 1000);
+					value = value + Math.random() * 21 - 10;
+					return {
+						name: now.toString(),
+						value: [
+							now,
+							Math.round(value)
+						]
+					}
+				}
+				var data = [];
+				var now = new Date();
+				var value = Math.random() * 1000;
+				var myChart = echarts.init(document.getElementById('myChart'));
+				myChart.setOption({
+					title: {
+						text: '动态数据 + 时间坐标轴'
+					},
+					tooltip: {
+						trigger: 'axis',
+						formatter: function(params) {
+							params = params[0];
+							var date = new Date(params.name);
+							return date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' : ' + params.value[1];
+						},
+						axisPointer: {
+							animation: false
+						}
+					},
+					xAxis: {
+						type: 'time',
+						splitLine: {
+							show: false
+						}
+					},
+					yAxis: {
+						type: 'value',
+						boundaryGap: [0, '100%'],
+						splitLine: {
+							show: false
+						}
+					},
+					series: [{
+						name: '模拟数据',
+						type: 'line',
+						showSymbol: false,
+						hoverAnimation: false,
+						data: data
+					}]
+				})
+				setInterval(function() {
+					//data.shift();
+					data.push(randomData());
+					myChart.setOption({
+						series: [{
+							data: data
+						}]
+					});
+				}, 1000);
 			}
 		},
 		mounted() {
 			this.initData()
+			this.init()
 			// 可见数据高度
 			this.$refs.marquee_box.style.height = this.showNum * 30 + 'px'
 		},
@@ -372,5 +434,12 @@
 		display: flex;
 		width: 100%;
 		justify-content: space-around;
+	}
+
+	#myChart {
+		width: 90%;
+		margin-left: 5%;
+		height: 18.75rem;
+		margin-top: 1%;
 	}
 </style>

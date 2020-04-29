@@ -189,7 +189,7 @@
 		display: flex;
 		justify-content: space-between;
 		text-align: center;
-		margin-top: 3%;
+		margin-top: 1.5%;
 		color: white;
 		font-size: 0.7rem;
 	}
